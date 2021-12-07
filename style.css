@@ -7,3 +7,32 @@ html {
   background-color: pink;
   height: 100%;
 }
+
+#option {
+  display: flex;
+  justify-content: center;
+  height: 20%;
+  margin: 10%;
+}
+
+#newBook {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  margin: auto;
+}
+
+.form {
+  border: 1px solid black;
+  background: rgb(107, 211, 211);
+  width: 200px;
+  text-align: center;
+  transition: all 0.2s ease-in-out;
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+.active {
+  transform: scale(1);
+  opacity: 1;
+}
