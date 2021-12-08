@@ -80,6 +80,17 @@ input[type="text"] {
   font-weight: 600;
 }
 
+input[type="number"] {
+  border-radius: 0.35rem;
+  border: 2px solid black;
+  margin: 0.4rem;
+  height: 1rem;
+  padding: 12px 12px;
+  font-size: 1rem;
+  text-align: center;
+  font-weight: 600;
+}
+
 .active {
   transform: scale(1);
   opacity: 1;
@@ -119,7 +130,10 @@ input[type="submit"]:hover {
 }
 
 #library {
-  margin-top: 20px;
+  margin: 20px 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
 .newBook {
@@ -139,4 +153,14 @@ input[type="submit"]:hover {
 
 .read {
   margin-top: 10px;
+  border: solid 2px black;
+  border-radius: 0.35rem;
+}
+
+.read-btn {
+  width: 190px;
+  height: 55px;
+  margin-bottom: 10px;
+  text-align: center;
+  padding: 5px;
 }

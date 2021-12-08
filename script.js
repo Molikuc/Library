@@ -2,101 +2,134 @@ let myLibrary = [];
 let arrayLength = myLibrary.length;
 const addBook = document.querySelector('button');
 const form = document.querySelector('form');
-const title = document.getElementById('ftitle');
-const author = document.getElementById('fauthor');
-const pages = document.getElementById('fpages');
-const newBook = document.getElementById('library');
-const read = document.getElementById('fread');
+const ftitle = document.getElementById('ftitle');
+const fauthor = document.getElementById('fauthor');
+const fpages = document.getElementById('fpages');
+const container = document.getElementById('library');
+const fread = document.getElementById('fread');
 
 
 addBook.addEventListener('click', () =>{
     displayForm();
 })
 
+function displayForm(){
+    form.classList.toggle("active");
+ }
+ 
 
 /* Constructor */
-function Book(title, author, pages, read){
-    this.title = title
-    this.author = author
-    this.pages = pages
-    this.read = read
-    myLibrary.push(this);
-    this.info = function(){
-        return title + " by " + author + " " + pages + " pages " + read + " read yet"
-    }
+function Book(){
+    this.title = ftitle.value,
+    this.author = fauthor.value,
+    this.pages = fpages.value,
+    this.read = fread.checked == true ? "read" : "not read";
 }
 
-const theHobbit = new Book('The Hobbit', 'J.R.R. Tolkien', '295', 'not');
-/* console.log(theHobbit.info()); */
-
-const dune = new Book('Dune', 'Frank Herbert', '412', 'not');
-
-
-function addBookToLibrary(){
-
-        const test = new Book(title.value, author.value, pages.value, );
-
-        const div = document.createElement('div');
-        div.classList.add('newBook');
-        const newTitle = document.createElement('div');
-        newTitle.classList.add('title');
-        newTitle.textContent = title.value;
-
-        const newAuthor = document.createElement('div');
-        newAuthor.classList.add('author');
-        newAuthor.textContent = author.value;
-
-        const newPages = document.createElement('div');
-        newPages.classList.add('pages');
-        newPages.textContent = pages.value+' pages';
-    
-        newBook.appendChild(div);
-        div.appendChild(newTitle);
-        div.appendChild(newAuthor);
-        div.appendChild(newPages);
-
-        if(read.checked){
-            const newRead = document.createElement('div');
-            newRead.classList.add('read');
-            newRead.textContent = read.value;
-            newPages.appendChild(newRead);
-        }
-
-        const remove = document.createElement('button');
-        remove.classList.add('remove');
-        remove.textContent = 'Remove';
-        div.appendChild(remove);
-        const removeNew = document.querySelector('.remove');
-        removeNew.addEventListener('click', () => {
-            removeBook();
-            newBook.removeChild(div);
-        })
-
-
-        console.log("Form has been submitted");
-}
-
-function displayArray(){
-    myLibrary.forEach(function(item){
-        console.log(item);
-    })
-}
-
-displayArray();
-
-function displayForm(){
-   form.classList.toggle("active");
+Book.prototype.changeStatus = function(){
+    (this.read == "read") ? (this.read = "not read"): (this.read = 'read');
 }
 
 form.addEventListener("submit", (e) => {
     e.preventDefault();
-    addBookToLibrary();
-    console.log(myLibrary);
+    if(ftitle.value === "" ){
+        alert('We need a full Book information');
+    } else if(fauthor.value === ""){
+        alert('We need a full Book information');
+    } else if(fpages.value === ""){
+        alert('We need a full Book information');
+    } else {
+        addBookToLibrary();
+    }
 });
 
-function removeBook(){
-    myLibrary.pop();
-    console.log(myLibrary);
+function addBookToLibrary(){
+    let newBook = new Book();
+    myLibrary.push(newBook);
+    refreshLibrary();
 }
 
+function renderLibrary(){
+    for(i = 0; i < myLibrary.length; i++){
+        renderCard(i);
+     }
 
+     const readBtn = document.getElementsByClassName('read-btn');
+     for(let i = 0; i < readBtn.length; i++){
+         readBtn[i].addEventListener('click', (e) => {
+             let index = e.target.parentNode.getAttribute('data');
+             myLibrary[index].changeStatus();
+             refreshLibrary();
+         });
+     }
+
+     const removeBtn = document.getElementsByClassName('remove');
+     for (let j = 0; j < removeBtn.length; j++){
+         removeBtn[j].addEventListener('click', removeBook);
+     }
+}
+
+function renderCard(i){
+        const card = document.createElement('div');
+        card.classList.add('newBook');
+        card.setAttribute('data', i);
+
+        const newTitle = document.createElement('div');
+        newTitle.classList.add('title');
+        newTitle.textContent = myLibrary[i].title;
+
+        const newAuthor = document.createElement('div');
+        newAuthor.classList.add('author');
+        newAuthor.textContent = myLibrary[i].author;
+
+        const newPages = document.createElement('div');
+        newPages.classList.add('pages');
+        newPages.textContent = myLibrary[i].pages+' pages';
+
+        const newRead = document.createElement('button');
+        newRead.classList.add('read-btn');
+        newRead.setAttribute('type', 'button');
+        if(myLibrary[i].read == 'read'){
+            newRead.style.backgroundColor="#43AD36";
+        }else{
+            newRead.style.backgroundColor="#AD3636";
+        }
+        newRead.textContent = myLibrary[i].read;
+
+    
+        container.appendChild(card);
+        card.appendChild(newTitle);
+        card.appendChild(newAuthor);
+        card.appendChild(newPages);
+        card.appendChild(newRead);
+        
+
+        const remove = document.createElement('button');
+        remove.setAttribute('type', 'button');
+        remove.classList.add('remove');
+        remove.textContent = 'Remove';
+        card.appendChild(remove);
+
+
+        console.log("Form has been submitted");
+
+}
+
+function removeBook(e){
+    let index = e.target.parentNode.getAttribute('data');
+    myLibrary.splice(index, 1);
+    refreshLibrary();
+}
+
+function removeCards(){
+    const books = container.querySelectorAll('.newBook');
+
+    books.forEach((book) => {
+        container.removeChild(book);
+    })
+}
+
+function refreshLibrary(){
+    removeCards();
+    renderLibrary()
+}
