@@ -12,7 +12,7 @@
       <button type="button" class="animbtn">Add New BOOK</button>
     </div>
     <div id="newBook">
-      <form class="form">
+      <form id="myForm" class="form">
         <label for="ftitle">Title</label><br />
         <input type="text" id="ftitle" name="ftitle" /><br />
         <label for="fauthor">Author</label><br />
@@ -20,10 +20,11 @@
         <label for="fpages">Pages</label><br />
         <input type="text" id="fpages" name="fpages" /><br /><br />
         <label for="fread" class="checktext">I read the book</label>
-        <input type="checkbox" id="fread" name="fread" value="read" /><br />
+        <input type="checkbox" id="fread" name="fread" value="Read" /><br />
         <input type="submit" value="Submit" />
       </form>
     </div>
+    <div id="library" class="library"></div>
     <script type="text/javascript" src="script.js"></script>
   </body>
 </html>
